@@ -1,0 +1,80 @@
+<html>
+<head>
+<title>JavaScript MouseEnter/Leave</title>
+<meta name="author" content="Marcus T Taylor">
+<style>
+#mouse-over-box {
+	height: 27px;
+	margin: auto;
+	width: 70%;
+}
+
+
+.nav-list {
+	display: none;
+	list-style: none;
+	margin-left: auto;
+	margin-right: auto;
+	margin: 0;
+	text-align: center;
+}
+
+.nav-list li {
+	display: inline-block;
+	font-family: 'Trebuchet MS', 'sans-serif';
+	font-size: 14px;
+}
+
+.nav-list li a {
+	display: block;
+	height: 22px;
+	padding-top: .3em;
+	text-decoration: none;
+	width: 100px;
+}
+
+.nav-list li a:hover {
+	background-color: gray;
+}
+
+p {
+	text-align: center;
+}
+</style>
+</head>
+
+<body>
+
+<div id="mouse-over-box">
+	<ul class="nav-list">
+		<li><a href="#">Home</a></li>
+		<li><a href="#">About</a></li>
+		<li><a href="#">Contact</a></li>
+		<li><a href="#">Links</a></li>
+		<li><a href="#">Projects</a></li>
+	</ul>
+</div>
+
+<p>Hover your mouse above to make a menu appear!</p>
+
+<script type="text/javascript" src="shared/jquery.min.js"></script>
+<script>
+( function() {
+	navigationMenuToggled = 0;
+	e = document.getElementById('mouse-over-box');
+	e.addEventListener("mouseenter", function() {
+		if ( navigationMenuToggled === 0 ) {
+			$('.nav-list').slideToggle(750);
+			navigationMenuToggled = 1;
+		}
+	});
+	e.addEventListener("mouseleave", function() {
+		if ( navigationMenuToggled === 1 ) {
+			$('.nav-list').slideToggle(950);
+			navigationMenuToggled = 0;
+		}
+	});
+} )();
+</script>
+</body>
+</html>
