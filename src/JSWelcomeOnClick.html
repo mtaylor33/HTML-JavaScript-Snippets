@@ -1,0 +1,53 @@
+<html>
+<head>
+<meta name="author" content="Marcus T Taylor">
+<title>Welcome Message on Click</title>
+<style>
+#welcome-message {
+	display: none;
+	font-family: Arial, sans-serif;
+}
+
+#welcome-message h1 {
+	font-size: 28px;
+	line-height: 30px;
+	margin: 0 0 .6em 0;
+	padding: 0;
+}
+
+#welcome-message p {
+	font-size: 18px;
+	line-height: 19px;
+	margin: .5em 0;
+	padding: 0;
+}
+</style>
+</head>
+
+<body>
+
+<div id="welcome-message">
+	<h1>Welcome, home</h1>
+	<p>This is a nice little welcome message!</p>
+</div>
+<div id="button-box">
+	<button id="getgo">Show Welcome</button>
+</div>
+
+<script type="text/javascript" src="shared/jquery.min.js"></script>
+<script>
+(function() {
+	e = document.getElementsByTagName('button')[0];
+	e.addEventListener("click", function() {
+		if ( $('#welcome-message').is(':visible') !== true ) {
+			$('#welcome-message').fadeIn(2000);
+			$('button').html('Hide Welcome');
+		} else {
+			$('#welcome-message').fadeOut(1000);
+			$('button').html('Show Welcome');
+		}
+	});
+})();
+</script>
+</body>
+</html>
