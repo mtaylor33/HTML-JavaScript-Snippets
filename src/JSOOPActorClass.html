@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta name="author" content="Marcus T Taylor">
+<title>JS OOP Actor Object</title>
+</head>
+
+<body>
+
+<h1>JS OOP Actor Object</h1>
+
+<ul></ul>
+
+<script type="text/javascript">
+(function (a) {
+  Actor = function(actor, mood, action) {
+    this.a = actor;
+    this.b = mood;
+    this.c = action;
+    };
+
+  Actor.prototype = {
+    constructor: Actor,
+
+    doAction: function() {
+      message = '<li>' + this.a + ' ' + this.c + '!</li>';
+      console.log(message);
+      return message;
+    },
+  
+    getMood: function() {
+      message = '<li>' + this.a + ' is currently ' + this.b + '.</li>';
+      console.log(message);
+      return message;
+    },
+  }
+  
+out = function(message) {
+  a.getElementsByTagName('ul')[0].innerHTML = message;
+}
+})(document);
+
+
+teddy = new Actor('Marcus', 'happy', 'arrives');
+pixie = new Actor('Mistie', 'happy', 'smiles');
+message = teddy.doAction();
+message += pixie.doAction();
+message += teddy.getMood();
+message += pixie.getMood();
+out(message);
+</script>
+</body>
+</html>
