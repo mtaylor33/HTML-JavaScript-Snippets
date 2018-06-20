@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta name="author" content="Marcus T Taylor">
+<title>Welcome Message on Click</title>
+<style>
+html, button {
+	font-family: 'Trebuchet MS', sans-serif;
+}
+
+#welcome-message, #button-box {
+	width: 400px;
+}
+
+#welcome-message {
+	display: none;
+}
+
+h1 {
+	font-size: 28px;
+	line-height: 30px;
+	margin: 12px 5px;
+	padding: 0;
+}
+
+p {
+	font-size: 16px;
+	line-height: 17px;
+	margin: 16px 10px;
+	padding: 0;
+}
+</style>
+</head>
+
+<body>
+
+<div id="welcome-message">
+	<h1>Welcome, home</h1>
+	<p>This is a nice little welcome message!</p>
+</div>
+<div id="button-box">
+	<button>Show Welcome</button>
+</div>
+
+<script type="text/javascript" src="shared/jquery.min.js"></script>
+<script>
+//Purposely written in a Spanglish way standard JavaScript/JQuery
+( function() {
+	e = document.getElementsByTagName('button')[0];
+	e.addEventListener("click", function() {
+		if ( $('#welcome-message').is(':visible') !== true ) {
+			$('#welcome-message').fadeIn(2000);
+			$('button').html('Hide Welcome');
+		} else {
+			$('#welcome-message').fadeOut(1000);
+			$('button').html('Show Welcome');
+		}
+	});
+} )();
+</script>
+
+</body>
+</html>
