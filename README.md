@@ -1,3 +1,3 @@
-# JavaScript-Snippets
+# HTML/JavaScript-Snippets
 
 Nope. Nothing to see here...
