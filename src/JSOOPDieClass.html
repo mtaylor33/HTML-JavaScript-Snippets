@@ -168,9 +168,9 @@ li {
   }
  
   Die.prototype = {
-    'constructor': Die,
+    constructor: Die,
 
-    'roll': function roll() {
+    roll: function roll() {
       return Math.floor(this.sides * Math.random() + 1);
     }
   };
