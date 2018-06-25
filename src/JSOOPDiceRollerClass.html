@@ -6,57 +6,57 @@
 <title>JS OOP Dice Roller Class</title>
 <style>
 html {
-  font-family: 'Trebuchet MS', sans-serif;
+	font-family: 'Trebuchet MS', sans-serif;
 }
 
 body {
-  margin: 0;
+	margin: 0;
 }
 
 input[type="button"], select {
-  width: 100px;
+	width: 100px;
 }
 
 input[type="button"] {
-  background-color: rgb(211, 211, 211);
-  border: 0;
-  border-bottom-left-radius: 11px;
-  border-bottom-right-radius: 5px;
-  border-top-left-radius: 6px;
-  border-top-right-radius: 9px;
-  color: rgb(131, 191, 121);
-  font-weight: bold;
-  margin: 1px 0;
-  padding: 4px 0;
+	background-color: rgb(211, 211, 211);
+	border: 0;
+	border-bottom-left-radius: 11px;
+	border-bottom-right-radius: 5px;
+	border-top-left-radius: 6px;
+	border-top-right-radius: 9px;
+	color: rgb(131, 191, 121);
+	font-weight: bold;
+	margin: 1px 0;
+	padding: 4px 0;
 }
 
 input[type="button"]:hover {
-  background-color: rgb(161, 161, 161);
-  color: rgb(151, 231, 141);
+	background-color: rgb(161, 161, 161);
+	color: rgb(151, 231, 141);
 }
 
 legend {
-  color: rgb(65, 71, 51);
-  font-size: 18px;
-  font-weight: bold;
-  margin: 10px 0;
-  padding: 0;
+	color: rgb(65, 71, 51);
+	font-size: 18px;
+	font-weight: bold;
+	margin: 10px 0;
+	padding: 0;
 }
 
 p {
-  line-height: 13px;
-  margin: 15px 0;
-  padding: 0;
+	line-height: 13px;
+	margin: 15px 0;
+	padding: 0;
 }
 
 ul {
-    margin: 0;
-    padding: 0;
+	margin: 0;
+	padding: 0;
 }
     
 li {
-  list-style-type: none;
-  margin: 2px 0;
+	list-style-type: none;
+	margin: 2px 0;
 }
 
 #container {
@@ -65,15 +65,15 @@ li {
 }
 
 #form-block {
-  display: block;
-  text-align: center;
-  width: 100%;
+	display: block;
+	text-align: center;
+	width: 100%;
 }
 
 .die-select, .roll-result, .store-result {
-  color: rgb(141, 160, 132);
-  font-size: 32px;
-  line-height: 30px;
+	color: rgb(141, 160, 132);
+	font-size: 32px;
+	line-height: 30px;
 }
 </style>
 </head>
@@ -82,35 +82,36 @@ li {
 
 <div id="container">
 	<div id="form-block">
-        <ul>
-            <li><select id="dice-bag">
-                    <option value="d4">D4</option>
-                    <option value="d6">D6</option>
-                    <option value="d8">D8</option>
-                    <option value="d10">D10</option>
-                    <option value="d12">D12</option>
-                    <option value="d20">D20</option>
-                    <option value="d100">D100</option>
-                </select>
-	    </li>
-            <li><input type="button" id="button-roll" value="Roll"></li>
-            <li><input type="button" id="button-store" value="Store"></li>
-            <li><input type="button" id="button-restore" value="Restore"></li>
-            <li><input type="button" id="button-reset" value="Reset"></li>
-        </ul>
-    </div>
-    <div id="form-block">
-            <legend>Die</legend>
-            <p class="die-select">d4</p>
-</div>
-<div id="form-block">
-            <legend>Result</legend>
-            <p class="roll-result">0</p>
-</div>
-<div id="form-block">
-            <legend>Store</legend>
-            <p class="store-result">0</p>
-    </div>
+		<ul>
+			<li>
+				<select id="dice-bag">
+					<option value="d4">D4</option>
+					<option value="d6">D6</option>
+					<option value="d8">D8</option>
+					<option value="d10">D10</option>
+					<option value="d12">D12</option>
+					<option value="d20">D20</option>
+					<option value="d100">D100</option>
+				</select>
+			</li>
+			<li><input type="button" id="button-roll" value="Roll"></li>
+			<li><input type="button" id="button-store" value="Store"></li>
+			<li><input type="button" id="button-restore" value="Restore"></li>
+			<li><input type="button" id="button-reset" value="Reset"></li>
+		</ul>
+	</div>
+	<div id="form-block">
+		<legend>Die</legend>
+		<p class="die-select">d4</p>
+	</div>
+	<div id="form-block">
+		<legend>Result</legend>
+		<p class="roll-result">0</p>
+	</div>
+	<div id="form-block">
+		<legend>Store</legend>
+		<p class="store-result">0</p>
+	</div>
 </div>
   
 <script type="text/javascript">
