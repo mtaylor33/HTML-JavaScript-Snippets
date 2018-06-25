@@ -3,24 +3,20 @@
 <head>
 <meta charset="utf-8">
 <meta name="author" content="Marcus T Taylor">
-<title>JS Dice Roller</title>
+<title>JS OOP Dice Roller Class</title>
 <style>
-#container {
-    position: absolute;
-    margin: auto;
-    top: 40%;
-    right: 0;
-    bottom: 0;
-    left: 30%;
+html {
+  font-family: 'Trebuchet MS', sans-serif;
 }
-#dice, #die-selection, #buttons, #result, #storage {
-    display: block;
-    float: left;
-    width: 120px;
+
+body {
+  margin: 0;
 }
+
 input[type="button"], select {
-    width: 100px;
+  width: 100px;
 }
+
 input[type="button"] {
   background-color: rgb(211, 211, 211);
   border: 0;
@@ -38,38 +34,46 @@ input[type="button"]:hover {
   background-color: rgb(161, 161, 161);
   color: rgb(151, 231, 141);
 }
-    
-input[type="text"] {
-    border: 0;
-    font-size: 36px;
-    /*width: 100px;*/
+
+legend {
+  color: rgb(65, 71, 51);
+  font-size: 18px;
+  font-weight: bold;
+  margin: 10px 0;
+  padding: 0;
 }
-    
+
+p {
+  line-height: 13px;
+  margin: 15px 0;
+  padding: 0;
+}
+
 ul {
     margin: 0;
     padding: 0;
 }
     
 li {
-    font-family: 'Trebuchet MS', sans-serif;
-    font-size: 12px;
-    list-style-type: none;
+  list-style-type: none;
+  margin: 2px 0;
 }
-.action-title {
-    font-weight: bold;
+
+#container {
+  margin: auto;
+  width: 400px;
 }
-.selected-die-name {
-    display: block;
-    font-size: 36px;
-    float: left;
-    margin: 0;
-    padding: 0;
-    text-align: right;
-    width: 50px;
+
+#form-block {
+  display: block;
+  text-align: center;
+  width: 100%;
 }
-.selected-die-value {
-    font-size: 36px;
-    float: left;
+
+.die-select, .roll-result, .store-result {
+  color: rgb(141, 160, 132);
+  font-size: 32px;
+  line-height: 30px;
 }
 </style>
 </head>
@@ -77,123 +81,82 @@ li {
 <body>
 
 <div id="container">
-    <div id="dice">
+	<div id="form-block">
         <ul>
-            <li class="action-title">Choose die:</li>
-            <li>
-                <select id="dice-bag">
-                    <option value="D4">D4</option>
-                    <option value="D6">D6</option>
-                    <option value="D8">D8</option>
-                    <option value="D10">D10</option>
-                    <option value="D12">D12</option>
-                    <option value="D20">D20</option>
-                    <option value="D100">D100</option>
+            <li><select id="dice-bag">
+                    <option value="d4">D4</option>
+                    <option value="d6">D6</option>
+                    <option value="d8">D8</option>
+                    <option value="d10">D10</option>
+                    <option value="d12">D12</option>
+                    <option value="d20">D20</option>
+                    <option value="d100">D100</option>
                 </select>
-            </li>
-        </ul>
-    </div>
-    <div id="die-selection">
-        <ul>
-            <li class="action-title">Selected Die:</li>
-            <li>
-                <span class="selected-die-name">D</span>
-                <span class="selected-die-value">4</span>
-            </li>
-        </ul>
-    </div>
-    <div id="buttons">
-        <ul>
-            <li class="action-title">Actions:</li>
+	    </li>
             <li><input type="button" id="button-roll" value="Roll"></li>
             <li><input type="button" id="button-store" value="Store"></li>
             <li><input type="button" id="button-restore" value="Restore"></li>
             <li><input type="button" id="button-reset" value="Reset"></li>
         </ul>
     </div>
-    <div id="result">
-        <ul>
-            <li class="action-title">Result:</li>
-            <li><input type="text" id="roll-result" value="0"></li>
-        </ul>
-    </div>
-    <div id="storage">
-        <ul>
-            <li class="action-title">Store:</li>
-            <li><input type="text" id="store-result" value="0"></li>
-        </ul>
+    <div id="form-block">
+            <legend>Die</legend>
+            <p class="die-select">d4</p>
+</div>
+<div id="form-block">
+            <legend>Result</legend>
+            <p class="roll-result">0</p>
+</div>
+<div id="form-block">
+            <legend>Store</legend>
+            <p class="store-result">0</p>
     </div>
 </div>
   
 <script type="text/javascript">
 ( function(x) {
+  die_select = x.getElementsByClassName('die-select')[0];
+  roll_result = x.getElementsByClassName('roll-result')[0];
+  store_result = x.getElementsByClassName('store-result')[0];
+
+
   a = x.getElementById("dice-bag");
   a.addEventListener("change", function() {
-    //"use strict";
-    input_enable = x.getElementsByTagName("input");
-    for (i=0; i<input_enable.length; i++) {
-      input_enable[i].disabled=false;
-    }
     die = x.getElementById("dice-bag").value;
-    switch(die) {
-      case "D4":
-        writeIn(4);
-        break;
-      case "D6":
-        writeIn(6);
-        break;
-      case "D8":
-        writeIn(8);
-        break;
-      case "D10":
-        writeIn(10);
-        break;
-      case "D12":
-        writeIn(12);
-        break;
-      case "D20":
-        writeIn(20);
-        break;
-      case "D100":
-        writeIn(100);
-        break;
-      default:
-        writeIn(4);
-    }
-    x.getElementById("roll-result").value = 0;
-    x.getElementById("store-result").value = 0;
+    writeIn(die);
+    roll_result.innerHTML = 0;
+    store_result.innerHTML = 0;
   })
     
   b = x.getElementById("button-roll")
   b.addEventListener("click", function() {
-    sides = x.getElementsByClassName("selected-die-value")[0].innerHTML;
+    sides = die_select.textContent.substring(1);
     die = new Die(sides);
-    x.getElementById("roll-result").value = die.roll();
+    roll_result.innerHTML = die.roll();
   });
     
   c = x.getElementById("button-store");
   c.addEventListener("click", function() {
-    stored_result = x.getElementById("roll-result").value;
-    x.getElementById("store-result").value = stored_result;
+    stored_result = roll_result.textContent;
+    store_result.innerHTML = stored_result;
   });
   d = x.getElementById("button-restore")
   d.addEventListener("click", function() {
-    stored = x.getElementById("store-result").value;
-    x.getElementById("roll-result").value = stored;
+    stored = store_result.textContent;
+    roll_result.innerHTML = stored;
   });
   e = x.getElementById("button-reset");
   e.addEventListener("click", function() {
     x.getElementById("dice-bag").selectedIndex = 0;
-    input_reset = x.getElementsByTagName("input");
-    for (i=0; i < input_reset.length; i++) {
-      if (input_reset[i].type === "text") {
-        input_reset[i].value = 0;
-      }
+    p_reset = x.getElementsByTagName("p");
+    for (i=0; i < p_reset.length; i++) {
+      p_reset[i].innerHTML = 0;
     }
     writeIn(4);
   });
+
   writeIn = function(selection) {
-    x.getElementsByClassName("selected-die-value")[0].innerHTML = selection;
+    die_select.innerHTML = selection;
   };    
     
   Die = function(num_of_sides=4) {
@@ -204,6 +167,8 @@ li {
   }
  
   Die.prototype = {
+    'constructor': Die,
+
     'roll': function roll() {
       return Math.floor(this.sides * Math.random() + 1);
     }
