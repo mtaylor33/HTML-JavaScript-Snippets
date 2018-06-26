@@ -1,0 +1,37 @@
+<html>
+<head>
+<title>JS Min Sum Functions</title>
+</head>
+
+<body>
+
+<script type="text/javascript">
+( function() {
+	min = function(values) {
+		lowest_result = Math.min(...values);
+		for ( index=0; index<values.length; index++ ) {
+			if ( values[index] === lowest_result ) {
+				values.splice(index, 1);
+				break;
+			}
+		}
+		return values;
+	};
+
+	sum = function(values) {
+		total = 0;
+		for ( index=0; index<values.length; index++ ) {
+			total = total += values[index];
+		}
+		return total;
+	};
+
+	const results = [2, 4, 2, 5];
+	console.log(results);
+	console.log(min(results));
+	console.log(sum(results));
+} )();
+</script>
+
+</body>
+</html>
