@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta name="author" content="Marcus T Taylor">
+<title>JS Character Editor</title>
+<script type="text/javascript">
+min = function(values) {
+	lowest_result = Math.min(...values);
+	for ( index=0; index<values.length; index++ ) {
+		if ( values[index] === lowest_result ) {
+			values.splice(index, 1);
+			break;
+		}
+	}
+	return values;
+};
+
+roll_all = function(threshold=75) {
+	scores = [];
+	total = 0;
+	do {
+		scores.push(roll_one());
+		scores.push(roll_one());
+		scores.push(roll_one());
+		scores.push(roll_one());
+		scores.push(roll_one());
+		scores.push(roll_one());
+		//console.log(scores);
+		total = sum(scores);
+		if ( total < threshold ) {
+			scores = [];
+		}
+	} while (total < threshold);
+	return scores;
+};
+
+roll_one = function() {
+	results = [];
+	die = new Die(6);
+	for (i=0; i<4; i++) {
+		results.push(die.roll());
+	}
+	min(results);
+	return sum(results);
+};
+
+sum = function(values) {
+	total = 0;
+	for ( index=0; index<values.length; index++ ) {
+		total = total += values[index];
+	}
+	return total;
+};
+
+
+Die = function(num_of_sides=4) {
+	if ( typeof num_of_sides !== "number" ) {
+		num_of_sides = parseInt(sides);
+	}
+	this.sides = num_of_sides || 4;
+}
+ 
+Die.prototype = {
+	constructor: Die,
+
+	roll: function roll() {
+		return Math.floor(this.sides * Math.random() + 1);
+	}
+};
+</script>
+</head>
+
+<body>
+
+<legend>Name</legend>
+<input type="text" name="name" value="">
+
+<legend>Sex</legend>
+<select name="sex">
+	<option value="Male">Male</option>
+	<option value="Female">Female</option>
+</select>
+
+<legend>Ability Scores</legend>
+<table>
+	<tr>
+		<th>Strength:</th>
+		<td><input type="text" name="score_str" disabled></td>
+	</tr>
+	<tr>
+		<th>Dexterity:</th>
+		<td><input type="text" name="score_dex" disabled></td>
+	</tr>
+	<tr>
+		<th>Constitution:</th>
+		<td><input type="text" name="score_con" disabled></td>
+	</tr>
+	<tr>
+		<th>Intelligence:</th>
+		<td><input type="text" name="score_int" disabled></td>
+	</tr>
+	<tr>
+		<th>Wisdom:</th>
+		<td><input type="text" name="score_wis" disabled></td>
+	</tr>
+	<tr>
+		<th>Charisma:</th>
+		<td><input type="text" name="score_cha" disabled></td>
+	</tr>
+	<tr>
+		<td colspan="2"><button id="score-button">Roll!</button></td>
+	</tr>
+</table>
+<script type="text/javascript" src="shared/jquery.min.js"></script>
+<script type="text/javascript">
+( function() {
+	$('#score-button').click( function() {
+		my_scores = roll_all();
+		$('input[name="score_str"]').val(my_scores[0]);
+		$('input[name="score_dex"]').val(my_scores[1]);
+		$('input[name="score_con"]').val(my_scores[2]);
+		$('input[name="score_int"]').val(my_scores[3]);
+		$('input[name="score_wis"]').val(my_scores[4]);
+		$('input[name="score_cha"]').val(my_scores[5]);
+	});
+} )();
+</script>
+
+</body>
+</html>
