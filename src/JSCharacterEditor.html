@@ -4,6 +4,16 @@
 <meta name="author" content="Marcus T Taylor">
 <title>JS Character Editor</title>
 <script type="text/javascript">
+generate_threshold = function() {
+	opt_values = '';
+	threshold = 53;
+	for ( i=threshold; threshold<95; i++ ) {
+		threshold = threshold += 1
+		opt_values += '<option value="' + threshold + '">' + threshold + '</option>';
+	}
+	return opt_values;
+}
+
 min = function(values) {
 	lowest_result = Math.min(...values);
 	for ( index=0; index<values.length; index++ ) {
@@ -15,7 +25,13 @@ min = function(values) {
 	return values;
 };
 
-roll_all = function(threshold=75) {
+roll_all = function(min_threshold=75) {
+	if ( min_threshold < 54 ) {
+		min_threshold = 54;
+	}
+	if ( min_threshold > 90 ) {
+		min_threshold = 90;
+	}
 	scores = [];
 	total = 0;
 	do {
@@ -25,12 +41,12 @@ roll_all = function(threshold=75) {
 		scores.push(roll_one());
 		scores.push(roll_one());
 		scores.push(roll_one());
-		//console.log(scores);
+		console.log(scores);
 		total = sum(scores);
-		if ( total < threshold ) {
+		if ( total < min_threshold ) {
 			scores = [];
 		}
-	} while (total < threshold);
+	} while ( total < min_threshold );
 	return scores;
 };
 
@@ -108,14 +124,21 @@ Die.prototype = {
 		<td><input type="text" name="score_cha" disabled></td>
 	</tr>
 	<tr>
+		<td colspan="2">
+			<select name="threshold">
+			</select>
+		</td>
+	</tr>
+	<tr>
 		<td colspan="2"><button id="score-button">Roll!</button></td>
 	</tr>
 </table>
 <script type="text/javascript" src="shared/jquery.min.js"></script>
 <script type="text/javascript">
 ( function() {
+	$('select[name="threshold"]').html(generate_threshold());
 	$('#score-button').click( function() {
-		my_scores = roll_all();
+		my_scores = roll_all($('select[name="threshold"]').val());
 		$('input[name="score_str"]').val(my_scores[0]);
 		$('input[name="score_dex"]').val(my_scores[1]);
 		$('input[name="score_con"]').val(my_scores[2]);
