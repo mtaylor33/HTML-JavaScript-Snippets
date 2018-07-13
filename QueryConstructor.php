@@ -130,21 +130,13 @@ class QueryConstructor
 	 */
 	private function where(array $where_clause)
 	{
-		if ( $this->stmt_SQL == null or count($where_values) <> 1 )
+		if ( $this->stmt_SQL == null 
+			or count($where_values) <> 1 
+			or strpos($this->stmt_SQL, 'INSERT') === 0 )
 		{
 			return false;
 		}
 		$my_statement = null;
-		/**
-		foreach ( $this->stmt as $type => $SQL )
-		{
-			if ( $this->stmt[$type] !== null )
-			{
-				$my_statement = $this->stmt[$type];
-				break;
-			}
-		}
-		*/
 		$my_where_clause = ' WHERE ';
 		foreach ( $where_clause as $column => $value )
 		{
