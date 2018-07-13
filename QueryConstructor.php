@@ -135,8 +135,8 @@ class QueryConstructor
 		{
 			return false;
 		}
-		$my_statement = null;
-		$my_where_clause = ' WHERE ';
+		$statement = ' WHERE ';
+		$my_where_clause = [];
 		foreach ( $where_clause as $column => $value )
 		{
 			if ( !is_numeric($value) )
@@ -149,6 +149,7 @@ class QueryConstructor
 			}
 			$my_where_clause[] = $column . '=' . $value;
 		}
-		$this->clause_where = implode(' AND ', $my_where_clause);
+		$my_where_clause = implode(' AND ', $my_where_clause);
+		$this->clause_where = $statement . $my_where_clause;
 	}
 }
