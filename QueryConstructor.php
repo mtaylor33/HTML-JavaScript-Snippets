@@ -1,13 +1,20 @@
 <?php
+/**
+ * QueryConstructor
+ * @author Marcus T. Taylor <mtaylor3121@gmail.com>
+ * @copyright 2018
+ */
 class QueryConstructor
 {
+  // Stores WHERE clause
 	protected $clause_where = null;
 	
+  // Stores SQL statement
 	protected $stmt_SQL = null;
 	
 
 	/**
-	 * @return string
+	 * @return string|bool
 	 */
 	public function build()
 	{
@@ -18,9 +25,9 @@ class QueryConstructor
 		$statement = $this->stmt_SQL;
 		if ( $this->clause_where !== null )
 		{
-			$statement = $this->stmt_SQL . $this->clause_where;
+			$statement = $statement . $this->clause_where;
 		}
-		return $statement;
+		return trim($statement);
 	}
 	
 	/**
@@ -50,26 +57,30 @@ class QueryConstructor
 		$table_columns = [];
 		foreach ( $my_table_columns as $column )
 		{
-			$table_columns = "'" . $column . "'";
+			$table_columns[] = "'" . $column . "'";
 		}
-		$table_columns = implode(',', $table_columns);
-		$my_column_values = array_key_values($set_columns);
+		$table_columns = implode(', ', $table_columns);
+		$my_column_values = array_values($set_columns);
 		$column_values = [];
 		foreach ( $my_column_values as $value )
 		{
 			if ( !is_numeric($value) )
 			{
-				$value = "'" . $value . "'";
+        // To ignore placing quotes for placeholder text
+        if ( strpos($value, ':') !== 0 )
+        {
+          $value = "'" . $value . "'";
+        }
 			}
 			else
 			{
-				$value = inval($value);
+				$value = intval($value);
 			}
 			$column_values[] = $value;
 		}
-		$column_values = implode(',', $column_values);
+		$column_values = implode(', ', $column_values);
 		$statement = sprintf($statement, $table_columns, $column_values);
-		$this->stmt_SQL = $statement;
+		$this->stmt_SQL = trim($statement);
 	}
 
 	/**
@@ -82,16 +93,17 @@ class QueryConstructor
 		{
 			return false;
 		}
+    $statement = null;
 		if ( $columns != null )
 		{
-			$columns = implode(',', $columns)
-			$this->stmt_SQL = 'SELECT ' . $columns . ' FROM ' . $table;
+			$columns = implode(', ', $columns);
+			$statement = 'SELECT ' . $columns . ' FROM ' . $table;
 		}
 		else
 		{
-			$this->stmt_SQL = 'SELECT * FROM ' . $table;
+			$statement = 'SELECT * FROM ' . $table;
 		}
-		$this->stmt_set = true;
+    $this->stmt_SQL = trim($statement);
 	}
 
 	/**
@@ -104,24 +116,27 @@ class QueryConstructor
 		{
 			return false;
 		}
-		$my_statement = 'UPDATE ' . $table . ' SET ';
+		$statement = 'UPDATE ' . $table . ' SET ';
 		$my_set_values = [];
 		foreach ( $set_values as $column => $value )
 		{
 			if ( !is_numeric($value) )
 			{
-				$value = "'" . $value . "'";
+        // To ignore placing quotes for placeholder text
+        if ( strpos($value, ':') !== 0 )
+        {
+          $value = "'" . $value . "'";
+        }
 			}
 			else
 			{
-				$value = inval($value);
+				$value = intval($value);
 			}
 			$my_set_values[] = $column . '=' . $value;
 		}
-		$my_set_values = implode(',', $my_set_values);
-		$my_statement = $my_statement . $my_set_values;
-		$this->stmt_SQL = $my_statement;
-		$this->stmt_set = true;
+		$my_set_values = implode(', ', $my_set_values);
+		$statement = $statement . $my_set_values;
+		$this->stmt_SQL = trim($statement);
 	}
 	
 	/**
@@ -129,8 +144,11 @@ class QueryConstructor
 	 */
 	public function where(array $where_clause)
 	{
+    // No empty SQL statements
+    // No less than one WHERE clause
+    // Begins with INSERT statement
 		if ( $this->stmt_SQL == null 
-			or count($where_clause) <> 1 
+			or count($where_clause) < 1 
 			or strpos($this->stmt_SQL, 'INSERT') === 0 )
 		{
 			return false;
@@ -141,11 +159,15 @@ class QueryConstructor
 		{
 			if ( !is_numeric($value) )
 			{
-				$value = "'" . $value . "'";
+        // To ignore placing quotes for placeholder text
+        if ( strpos($value, ':') !== 0 )
+        {
+          $value = "'" . $value . "'";
+        }
 			}
 			else
 			{
-				$value = inval($value);
+				$value = intval($value);
 			}
 			$my_where_clause[] = $column . '=' . $value;
 		}
@@ -160,3 +182,13 @@ class QueryConstructor
 		$this->clause_where = $statement . $my_where_clause;
 	}
 }
+
+/**
+$sql = new QueryConstructor();
+$sql->delete('lcnapvg_notices');
+$sql->select('lcnapvg_notices', ['NID', 'title', 'body']);
+$sql->insert('lcnapvg_notices', ['text' => 'Title', 'body' => 'This is some text']);
+$sql->update('lcnapvg_notices', ['text' => ':title', 'body' => ':body']);
+$sql->where(['NID' => ':nid']);
+echo $sql->build();
+*/
