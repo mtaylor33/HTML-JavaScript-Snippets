@@ -127,7 +127,7 @@ class QueryConstructor
 	/**
 	 * @param array $where_values
 	 */
-	private function where(array $where_clause)
+	public function where(array $where_clause)
 	{
 		if ( $this->stmt_SQL == null 
 			or count($where_clause) <> 1 
