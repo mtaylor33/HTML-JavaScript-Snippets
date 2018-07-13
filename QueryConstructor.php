@@ -126,12 +126,11 @@ class QueryConstructor
 	
 	/**
 	 * @param array $where_values
-	 * @return string|bool
 	 */
 	private function where(array $where_clause)
 	{
 		if ( $this->stmt_SQL == null 
-			or count($where_values) <> 1 
+			or count($where_clause) <> 1 
 			or strpos($this->stmt_SQL, 'INSERT') === 0 )
 		{
 			return false;
