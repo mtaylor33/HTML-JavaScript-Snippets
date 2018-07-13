@@ -149,7 +149,14 @@ class QueryConstructor
 			}
 			$my_where_clause[] = $column . '=' . $value;
 		}
-		$my_where_clause = ( count($my_where_clause) > 1 ) ? implode(' AND ', $my_where_clause) : $my_where_clause[0];
+		if ( count($my_where_clause) > 1 )
+		{
+			$my_where_clause = implode(' AND ', $my_where_clause);
+		}
+		else
+		{
+			$my_where_clause = $my_where_clause[0];
+		}
 		$this->clause_where = $statement . $my_where_clause;
 	}
 }
