@@ -44,7 +44,7 @@ class QueryConstructor
 
 	/**
 	 * @param string $table
-	 * @return string
+	 * @return string|bool
 	 */
 	public function delete($table)
 	{
@@ -60,7 +60,7 @@ class QueryConstructor
 	/**
 	 * @param string $table
 	 * @param array $set_columns
-	 * @return string
+	 * @return string|bool
 	 */
 	public function insert($table, array $set_columns)
 	{
@@ -100,7 +100,7 @@ class QueryConstructor
 	/**
 	 * @param string $table
 	 * @param array $columns
-	 * @return string
+	 * @return string|bool
 	 */
 	public function select($table, array $columns=null)
 	{
@@ -124,7 +124,7 @@ class QueryConstructor
 	/**
 	 * @param string $table
 	 * @param array $set_values
-	 * @return string
+	 * @return string|bool
 	 */
 	public function update($table, array $set_values)
 	{
@@ -151,5 +151,17 @@ class QueryConstructor
 		$this->stmt_update = $my_statement;
 		$this->stmt_set = true;
 		return $this->stmt_update;
+	}
+	
+	/**
+	 * @param array $where_values
+	 * @return string|bool
+	 */
+	public function where(array $where_values)
+	{
+		if ( !$this->stmt_set )
+		{
+			return false;
+		}
 	}
 }
