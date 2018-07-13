@@ -1,9 +1,28 @@
 <?php
 class QueryConstructor
 {
+	protected $clause_where = null;
+	
 	protected $stmt_SQL = null;
 	
 
+	/**
+	 * @return string
+	 */
+	public function build()
+	{
+		if ( $this->stmt_SQL === null )
+		{
+			return false;
+		}
+		$statement = $this->stmt_SQL;
+		if ( $this->clause_where !== null )
+		{
+			$statement = $this->stmt_SQL . $this->clause_where;
+		}
+		return $statement;
+	}
+	
 	/**
 	 * @param string $table
 	 */
@@ -109,13 +128,14 @@ class QueryConstructor
 	 * @param array $where_values
 	 * @return string|bool
 	 */
-	public function where(array $where_values)
+	private function where(array $where_clause)
 	{
 		if ( $this->stmt_SQL == null or count($where_values) <> 1 )
 		{
 			return false;
 		}
 		$my_statement = null;
+		/**
 		foreach ( $this->stmt as $type => $SQL )
 		{
 			if ( $this->stmt[$type] !== null )
@@ -124,17 +144,20 @@ class QueryConstructor
 				break;
 			}
 		}
-		$where_statement = 'WHERE ';
-		$column = $where_values[0];
-		$value = $where_values[1];
-		if ( !is_numeric($value) )
+		*/
+		$my_where_clause = ' WHERE ';
+		foreach ( $where_clause as $column => $value )
 		{
-			$value = "'" . $value . "'";
+			if ( !is_numeric($value) )
+			{
+				$value = "'" . $value . "'";
+			}
+			else
+			{
+				$value = inval($value);
+			}
+			$my_where_clause[] = $column . '=' . $value;
 		}
-		else
-		{
-			$value = inval($value);
-		}
-		$where_statement = $where_statement . $column . '=' . $value;
+		$this->clause_where = implode(' AND ', $my_where_clause);
 	}
 }
