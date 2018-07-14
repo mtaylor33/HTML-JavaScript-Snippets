@@ -6,6 +6,7 @@
  */
 class QueryConstructor
 {
+  // Stores ORDER BY clause
   protected $clause_order = null;
   
   // Stores WHERE clause
