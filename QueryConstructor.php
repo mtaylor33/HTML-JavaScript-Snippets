@@ -6,6 +6,8 @@
  */
 class QueryConstructor
 {
+  protected $clause_order = null;
+  
   // Stores WHERE clause
 	protected $clause_where = null;
 	
@@ -23,10 +25,16 @@ class QueryConstructor
 			return false;
 		}
 		$statement = $this->stmt_SQL;
+    // If applicable, add WHERE clause
 		if ( $this->clause_where !== null )
 		{
 			$statement = $statement . $this->clause_where;
 		}
+    // If applicable, add ORDER BY clause
+    if ( $this->clause_order !== null )
+    {
+      $statement = $statement . $this->clause_order;
+    }
 		return trim($statement);
 	}
 	
@@ -82,6 +90,54 @@ class QueryConstructor
 		$statement = sprintf($statement, $table_columns, $column_values);
 		$this->stmt_SQL = trim($statement);
 	}
+  
+  /**
+   * @param array $columns
+   * @param bool $orders
+   */
+  public function order_by(array $columns, $orders=false)
+  {
+    // No empty SQL statement
+    // Doesn't begin with SELECT statement
+		if ( $this->stmt_SQL === null 
+			or strpos($this->stmt_SQL, 'SELECT') !== 0 )
+		{
+			return false;
+		}
+    if ( empty($columns) )
+    {
+      return false;
+    }
+    $statement = ' ORDER BY ';
+    if ( is_array($orders) and count($columns) === count($orders) )
+    {
+      $order_pairs = [];
+      for ( $i=0; $i<count($columns); $i++ )
+      {
+        $column = $columns[$i];
+        $order = $orders[$i];
+        if ( !in_array($order, ['ASC', 'DESC']) )
+        {
+          return false;
+        }
+        $order_pairs[] = $column . ' ' . $order;
+      }
+      $order_pairs = implode(', ', $order_pairs);
+      $statement = $statement . $order_pairs;
+      $this->clause_order = $statement;
+    }
+    
+    if ( !is_array($orders) )
+    {
+      if ( is_string($orders) and !in_array($orders, ['ASC', 'DESC']) or !$orders )
+      {
+        $orders = 'ASC';
+      }
+      $columns = implode(', ', $columns);
+      $statement = $statement . $columns . ' ' . $orders;
+      $this->clause_order = $statement;
+    }
+  }
 
 	/**
 	 * @param string $table
@@ -144,10 +200,10 @@ class QueryConstructor
 	 */
 	public function where(array $where_clause)
 	{
-    // No empty SQL statements
+    // No empty SQL statement
     // No less than one WHERE clause
     // Begins with INSERT statement
-		if ( $this->stmt_SQL == null 
+		if ( $this->stmt_SQL === null 
 			or count($where_clause) < 1 
 			or strpos($this->stmt_SQL, 'INSERT') === 0 )
 		{
@@ -183,12 +239,12 @@ class QueryConstructor
 	}
 }
 
-/**
-$sql = new QueryConstructor();
-$sql->delete('lcnapvg_notices');
-$sql->select('lcnapvg_notices', ['NID', 'title', 'body']);
-$sql->insert('lcnapvg_notices', ['text' => 'Title', 'body' => 'This is some text']);
-$sql->update('lcnapvg_notices', ['text' => ':title', 'body' => ':body']);
-$sql->where(['NID' => ':nid']);
-echo $sql->build();
-*/
+
+//$sql = new QueryConstructor();
+//$sql->delete('lcnapvg_notices');
+//$sql->select('lcnapvg_notices', ['NID', 'title', 'body']);
+//$sql->insert('lcnapvg_notices', ['text' => 'Title', 'body' => 'This is some text']);
+//$sql->update('lcnapvg_notices', ['text' => ':title', 'body' => ':body']);
+//$sql->where(['NID' => ':nid']);
+//$sql->order_by(['NID']);
+//echo $sql->build();
